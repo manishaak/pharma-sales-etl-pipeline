@@ -1,0 +1,16 @@
+order_id,product,region,category,amount,order_date
+1,Aspirin,North,Pharma,500,2024-01-15
+2,Ibuprofen,South,Pharma,700,2024-01-20
+3,Paracetamol,East,Pharma,400,2024-02-05
+4,Amoxicillin,North,Pharma,1200,2024-02-18
+5,Metformin,West,Pharma,300,2024-03-01
+6,Lisinopril,South,Pharma,900,2024-03-10
+7,Atorvastatin,East,Pharma,150,2024-04-05
+8,Omeprazole,North,Pharma,2000,2024-04-22
+9,Azithromycin,West,Pharma,450,2024-05-15
+10,Cetirizine,South,Pharma,800,2024-05-30
+11,Pantoprazole,North,Pharma,600,2024-06-10
+12,Losartan,East,Pharma,750,2024-07-04
+13,Metoprolol,West,Pharma,1100,2024-08-19
+14,Amlodipine,South,Pharma,200,2024-09-25
+15,Gabapentin,North,Pharma,3000,2024-10-31

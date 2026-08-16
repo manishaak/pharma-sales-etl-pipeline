@@ -1,0 +1,4 @@
+config/config.py
+delta/
+__pycache__/
+*.pyc
