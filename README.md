@@ -1,23 +1,20 @@
 # 🏥 Pharma Sales ETL Pipeline
 
-An end-to-end data engineering pipeline built using PySpark, Delta Lake, AWS S3,
-and Medallion Architecture to process and analyze pharmaceutical sales data.
+An end-to-end data engineering pipeline built using PySpark, Delta Lake, and AWS S3 following the Medallion Architecture pattern to process and analyze pharmaceutical sales data.
 
 ---
 
 ## 🏗️ Architecture
-pharma_sales.csv
-↓
-AWS S3 (Raw Storage)
-↓ boto3
-Bronze Layer (Delta Lake)
-→ Raw ingestion, no transformations
-↓ PySpark
-Silver Layer (Delta Lake)
-→ Cleaned, deduplicated, schema enforced, audit columns
-↓ PySpark
-Gold Layer (Delta Lake)
-→ 3 business-ready aggregated tables
+
+**pharma_sales.csv → AWS S3 → Bronze Layer → Silver Layer → Gold Layer**
+
+| Layer | Tool | Description |
+|---|---|---|
+| Ingestion | AWS S3 + boto3 | Raw CSV stored and downloaded from S3 |
+| Bronze | PySpark + Delta Lake | Raw ingestion, no transformations |
+| Silver | PySpark + Delta Lake | Cleaned, deduplicated, schema enforced |
+| Gold | PySpark + Delta Lake | 3 business-ready aggregated tables |
+
 ---
 
 ## 🛠️ Tech Stack
@@ -34,37 +31,23 @@ Gold Layer (Delta Lake)
 
 ## 📁 Project Structure
 
-pharma-pipeline/
-│
-├── bronze/
-│ └── bronze_layer.py # Raw ingestion from S3 → Delta Lake
-│
-├── silver/
-│ └── silver_layer.py # Cleaning, deduplication, schema enforcement
-│
-├── gold/
-│ └── gold_layer.py # Business aggregations
-│
-├── data/
-│ └── pharma_sales.csv # Sample pharma sales data
-│
-├── config/
-│ └── config.py # AWS credentials + paths (gitignored)
-│
-└── README.md
+| File | Description |
+|---|---|
+| `bronze/bronze_layer.py` | Raw ingestion from S3 → Delta Lake |
+| `silver/silver_layer.py` | Cleaning, deduplication, schema enforcement |
+| `gold/gold_layer.py` | Business aggregations — 3 Gold tables |
+| `data/pharma_sales.csv` | Sample pharma sales data |
+| `config/config.py` | AWS credentials + paths (gitignored 🔐) |
 
 ---
 
 ## 📊 Gold Layer Outputs
 
-### 1. Sales by Region
-Total and average pharma sales per region, ordered by revenue.
-
-### 2. Sales by Product (Ranked)
-All products ranked by total revenue using Window Functions + dense_rank().
-
-### 3. Monthly Sales Trend
-Month-over-month revenue aggregated by year and month.
+| Table | Description |
+|---|---|
+| `sales_by_region` | Total and average sales per region |
+| `sales_by_product` | Products ranked by revenue using dense_rank() |
+| `monthly_trend` | Month-over-month revenue aggregated by year and month |
 
 ---
 
@@ -86,10 +69,8 @@ Month-over-month revenue aggregated by year and month.
 
 ### Gold Layer
 - Reads from Silver Delta table
-- Builds 3 aggregated business tables:
-  - sales_by_region
-  - sales_by_product (with dense_rank)
-  - monthly_trend
+- Builds 3 aggregated business-ready tables
+- Uses Window Functions + dense_rank() for product ranking
 - Writes to separate Gold Delta paths
 
 ---
@@ -97,36 +78,22 @@ Month-over-month revenue aggregated by year and month.
 ## ⚙️ How to Run
 
 ### Prerequisites
-```bash
-pip install pyspark==3.5.0 boto3 delta-spark==3.2.0
-```
+Install dependencies:
+`pip install pyspark==3.5.0 boto3 delta-spark==3.2.0`
 
 ### Setup
-1. Create `config/config.py` with your AWS credentials:
-```python
-AWS_ACCESS_KEY = "your_access_key"
-AWS_SECRET_KEY = "your_secret_key"
-AWS_REGION = "ap-south-1"
-S3_BUCKET = "your-bucket-name"
-S3_FILE_PATH = "pharma_sales.csv"
-BRONZE_PATH = "delta/bronze/pharma_sales"
-SILVER_PATH = "delta/silver/pharma_sales"
-GOLD_PATH = "delta/gold/pharma_sales"
-```
+Create `config/config.py` with your AWS credentials:
 
-2. Upload `pharma_sales.csv` to your S3 bucket
+`AWS_ACCESS_KEY`, `AWS_SECRET_KEY`, `AWS_REGION`, `S3_BUCKET`, `S3_FILE_PATH`, `BRONZE_PATH`, `SILVER_PATH`, `GOLD_PATH`
+
+Upload `pharma_sales.csv` to your S3 bucket.
 
 ### Run Pipeline
-```bash
-# Step 1 — Bronze Layer
-py bronze/bronze_layer.py
+Run in order:
 
-# Step 2 — Silver Layer
-py silver/silver_layer.py
-
-# Step 3 — Gold Layer
-py gold/gold_layer.py
-```
+1. `py bronze/bronze_layer.py`
+2. `py silver/silver_layer.py`
+3. `py gold/gold_layer.py`
 
 ---
 
@@ -143,7 +110,3 @@ py gold/gold_layer.py
 
 ## 👩‍💻 Author
 Manisha Kumari | [LinkedIn](https://www.linkedin.com/in/manisha-kumari-52686415b/)
-
----
-
-## 📁 Project Structure
